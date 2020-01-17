@@ -1,6 +1,5 @@
 var fs = require('fs');
 var request = require('request');
-// var zlib = require('zlib');
 var express = require('express');
 var app = express();
 app.use(express.urlencoded({extended: false}));
@@ -31,8 +30,9 @@ app.use(function(req, res, next){
                 return;
             }
             console.log('From '+req.ip+' status code '+response.statusCode+': '+req.originalUrl);
-            for(var c in response.headers){if(c.toLowerCase() === 'content-encoding') response.headers[c]='gunzip'}
-            response.headers['Content-Encoding'] = 'gunzip';
+            for(var c in response.headers){if(c.toLowerCase() === 'content-encoding') response.headers[c]='none'}
+            response.headers['Content-Encoding'] = 'none';
+            for(var c in response.headers){if(c.toLowerCase() === 'content-type') response.headers[c]=response.headers[c].split(';')[0]}
             res.set(response.headers);
             res.status(response.statusCode);
             
